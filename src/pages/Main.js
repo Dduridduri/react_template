@@ -1,14 +1,18 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeName } from '../store'
 
 function Main() {
 
   const a = useSelector(state => state.user)
+  const dispatch = useDispatch()
+
+
   return (
     <>
       <p>{a}</p>
       <p></p>
-      <button>변경</button>
+      <button onClick={()=>{dispatch(changeName())}}>변경</button>
     </>
   )
 }

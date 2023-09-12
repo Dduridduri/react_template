@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
+import Mnav from './Mnav'
 
 
 
@@ -71,41 +72,109 @@ function Nav() {
   }
 
   const [isActive, setIsActive] = useState(-1);
-  const SubMenu = [
-    ["인사말", "연혁", "내부전경", "오시는길"],
-    ["사업소개", "사업소개2", "사업소개3"],
-    ["제품소개", "제품소개2", "제품소개3"],
-    ["공지사항", "온라인 상담", "질문과답변", "갤러리"]
-  ]
-  const SubmMenuLink = [
-    ["/company/greetings", "/company/history", "/company/interior", "/company/directions"],
-    ["/business/business-1","/business/business-2","/business/business-3"],
-    ["/product/product-1","/product/product-2","/product/product-3"],
-    ["/service/notice", "/service/online", "/service/qna", "/service/gallery"]
-  ]
+  const SubData = {
+    company: [
+      {
+        title:"인사말",
+        link: "/company/greetings"
+      },
+      {
+        title:"연혁",
+        link: "/company/history"
+      },
+      {
+        title:"내부전경",
+        link: "/company/interior"
+      },
+      {
+        title:"오시는길",
+        link: "/company/directions"
+      },
+    ],
+    business: [
+      {
+        title:"사업소개",
+        link:"/business/business-1"
+      },
+      {
+        title:"사업소개2",
+      link:"/business/business-2"
+      },
+      {
+        title:"사업소개3",
+        link:"/business/business-3"
+      }
+    ],
+    product: [
+     {
+      title:"제품소개",
+      link:"/product/product-1"
+     },
+     {
+      title:"제품소개2",
+      link:"/product/product-2"
+     },
+     {
+      title:"제품소개3",
+      link:"/product/product-3"
+     }
+    ],
+    service: [
+      {
+        title:"공지사항",
+        link:"/service/notice"
+       },
+      {
+        title:"온라인 상담",
+        link:"/service/online"
+       },
+      {
+        title:"질문과답변",
+        link:"/service/qna"
+       },
+      {
+        title:"갤러리",
+        link:"/service/gallery"
+       }
+    
+    ]
+  }
+  //변수명['company'][0].title
+  // const SubMenu = [
+  //   ["인사말", "연혁", "내부전경", "오시는길"],
+  //   ["사업소개", "사업소개2", "사업소개3"],
+  //   ["제품소개", "제품소개2", "제품소개3"],
+  //   ["공지사항", "온라인 상담", "질문과답변", "갤러리"]
+  // ]
+  // const SubmMenuLink = [
+  //   ["/company/greetings", "/company/history", "/company/interior", "/company/directions"],
+  //   ["/business/business-1","/business/business-2","/business/business-3"],
+  //   ["/product/product-1","/product/product-2","/product/product-3"],
+  //   ["/service/notice", "/service/online", "/service/qna", "/service/gallery"]
+  // ]
 
 
 
+  //  const Nav = [
+  //   ["회사소개", "사업소개", "제품소개", "고객센터"],
+  //   ["/company", "/business", "/product", "/service"]
+  //  ]
    const Nav = [
-    ["회사소개", "사업소개", "제품소개", "고객센터"],
-    ["/company", "/business", "/product", "/service"]
-   ]
-   const Nav2 = [
     {
       title: "회사소개",
-      link : "/company"
+      link : "company"
     },
     {
       title: "사업소개",
-      link : "/business"
+      link : "business"
     },
     {
       title: "제품소개",
-      link : "/product"
+      link : "product"
     },
     {
       title: "고객센터",
-      link : "/service"
+      link : "service"
     }
    ]
   //  SubMenu[i].map((e,index)=>{
@@ -131,7 +200,7 @@ function Nav() {
                 //     <li><NavLink to={Nav[1][i]}>{e}</NavLink></li>
                 //   )
                 // })
-                Nav2.map((e,i)=>{
+                Nav.map((e,i)=>{
                   return (
                     <li onMouseOver={()=>{
                       setIsActive(i);
@@ -139,12 +208,12 @@ function Nav() {
                     }} onMouseOut={()=>{
                       setIsActive(-1);
                     }} 
-                    key={i}><NavLink to={e.link}>{e.title}</NavLink>
+                    key={i}><NavLink to={`/${e.link}`}>{e.title}</NavLink>
                       <NavSubmenu className={`sub_list`} $isopen={isActive === i ? "true" : "false"} $height={isHeight}>
                         {
-                          SubMenu[i].map((el,index)=>{
+                          SubData[e.link].map((el,index)=>{
                             return (
-                              <li key={index}><NavLink to={SubmMenuLink[i][index]}>{el}</NavLink></li>
+                              <li key={index}><NavLink to={el.link}>{el.title}</NavLink></li>
                             )
                           })
                         }
@@ -171,6 +240,8 @@ function Nav() {
           </NavMember>
         </NavWrap>
       </NavContent>
+      {/* 모바일네비 */}
+      <Mnav/>
     </>
   )
 }
