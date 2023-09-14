@@ -6,16 +6,22 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword , getAuth} f
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: `${process.env.REACT_APP_apiKey}`,
-  authDomain: `${process.env.REACT_APP_authDomain}`,
-  projectId: `${process.env.REACT_APP_projectId}`,
-  storageBucket: `${process.env.REACT_APP_storageBucket}`,
-  messagingSenderId: `${process.env.REACT_APP_messagingSenderId}`,
-  appId:`${process.env.REACT_APP_appId}`
+  apiKey: "AIzaSyBj-ygSeu2rquiloy2Bz_Pi5JyjEz07AUg",
+  authDomain: "reacttemplate-5475a.firebaseapp.com",
+  projectId: "reacttemplate-5475a",
+  storageBucket: "reacttemplate-5475a.appspot.com",
+  messagingSenderId: "910348689500",
+  appId: "1:910348689500:web:28a5818322e1966f964699"
+  // apiKey: process.env.REACT_APP_apiKey,
+  // authDomain: process.env.REACT_APP_authDomain,
+  // projectId: process.env.REACT_APP_projectId,
+  // storageBucket: process.env.REACT_APP_storageBucket,
+  // messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  // appId:process.env.REACT_APP_appId
 };
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
-const firebasAuth = getAuth(firebaseApp);
+const firebaseAuth = getAuth(firebaseApp);
 
-export {firebasAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword}
+export {firebaseAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword}
