@@ -4,15 +4,11 @@ import { changeName } from '../store'
 
 function Main() {
 
-  const a = useSelector(state => state.user)
-  const dispatch = useDispatch()
 
 
   return (
     <>
-      <p>{a}</p>
       <p></p>
-      <button onClick={()=>{dispatch(changeName())}}>변경</button>
     </>
   )
 }

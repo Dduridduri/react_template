@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { Link, NavLink } from 'react-router-dom';
 
 const ModalBackground = styled.div`
 position: fixed;
@@ -26,6 +27,7 @@ flex-wrap: wrap;
 }
 >p{
   font-size: 16px;
+  padding: 10px;
 }
 `
 const Button = styled.button`
@@ -38,7 +40,7 @@ const Button = styled.button`
   cursor: pointer;
 `
 
-function Modal({ error, onClose }) {
+function Modal({ error, onClose}) {
   // const [isModal, setIsModal] = useState(false);
   
   return (
@@ -50,7 +52,9 @@ function Modal({ error, onClose }) {
       <ModalContent>
         <FontAwesomeIcon icon={faTriangleExclamation}/>
         <p>{error}</p>
+        
         <Button onClick={onClose}>확인</Button>
+        
       </ModalContent>
     </ModalBackground>
     }

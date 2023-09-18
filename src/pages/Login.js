@@ -4,6 +4,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import {firebaseAuth, signInWithEmailAndPassword} from './../firebase'
 import { useNavigate } from 'react-router-dom'
+import { collection, getFirestore, doc, getDoc } from 'firebase/firestore'
+import { useDispatch } from 'react-redux'
+import {logIn, loggedIn } from './../store'
 
 
 
@@ -83,6 +86,8 @@ function Login() {
   const [password, setPassword] = useState();
   const [error, setError] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const errorMsg = (errorCode) =>{
     const firebaseError = {
       'auth/user-not-found' : '사용자를 찾을 수 없습니다.',
@@ -101,7 +106,22 @@ function Login() {
       const userLogin = await signInWithEmailAndPassword(firebaseAuth, email , password);
       //const 가 실행될때까지 다른거하지말고 기다리라는 뜻 async에서만 쓸수있음
       const user = userLogin.user;
-      console.log(user)
+      console.log(userLogin)
+      sessionStorage.setItem("users", user.uid)
+      dispatch(logIn(user.uid));
+
+      const userDoc = doc(collection(getFirestore(), "users"), user.uid);
+
+      const userDocSnapshot = await getDoc(userDoc);
+        console.log(userDocSnapshot.exists())
+        if(userDocSnapshot.exists()){
+          const userData = userDocSnapshot.data();
+          dispatch(loggedIn(userData));
+          navigate('/');
+          console.log(userData)
+        }
+
+
     }catch(error){
       // 실패하면
       console.log(error.code)
@@ -117,7 +137,7 @@ function Login() {
     <Container>
       <SignUp>
         <Title>로그인</Title>
-        {email} {password}
+        
         <form onSubmit={LoginFrom}>
           <InputWrapper>
             <Input type='email' className='email' placeholder='이메일' onChange={(e)=>{

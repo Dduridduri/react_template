@@ -187,9 +187,7 @@ function Member() {
     <>
     {
       isModal &&
-   <Modal onClose={closeModal} error={error}>
-
-   </Modal>
+   <Modal onClose={closeModal} error={error}/>
     }
     <Container>
       <SignUp>
