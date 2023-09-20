@@ -1,10 +1,10 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import GlobalStyle from "./components/GlobalStyle";
 import Main from "./pages/Main";
 import Aside from "./components/Aside";
 import { ThemeProvider } from "styled-components";
 import Nav from "./components/Nav";
-import store, { loggedIn } from "./store";
+import store, { logIn, loggedIn } from "./store";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import Member from "./pages/Member";
 import Login from "./pages/Login";
@@ -14,6 +14,15 @@ import { useEffect } from "react";
 import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
 import Modify from "./pages/Modify";
 import FindEmail from "./pages/FindEmail";
+import Write from "./pages/Write";
+import Service from "./pages/Service";
+import Notice from "./pages/service/Notice";
+import Online from "./pages/service/Online";
+import Qna from "./pages/service/Qna";
+import Gallery from "./pages/service/Gallery";
+import View from "./pages/View";
+import { useState } from "react";
+import Modal from "./components/Modal";
 
 
 function App() {
@@ -59,6 +68,9 @@ function Inner(){
   const dispatch = useDispatch();
   const uid = sessionStorage.getItem("users");
   console.log(uid)
+  if(uid){
+    dispatch(logIn(uid));
+  }
 
   useEffect(()=>{
 //로딩되고나서 작동하는것
@@ -86,6 +98,9 @@ function Inner(){
   //   setThemeConfig(themeConfig === 'light' ? 'dark' : 'light')
   // }
 
+  const [isModal, setIsModal] = useState(true);
+  const navigate = useNavigate();
+
   return (
     <ThemeProvider theme={DarkMode}>
       
@@ -102,6 +117,15 @@ function Inner(){
         <Route path="/logout" element={<Logout/>}></Route>
         <Route path="/modify" element={<Modify/>}></Route>
         <Route path="/findemail" element={<FindEmail/>}></Route>
+        <Route path="/write/:board" element={<Write/>}></Route>
+        <Route path="/view/:board/:view" element={<View/>}></Route>
+        <Route path="/view/:board" element={isModal && <Modal error="유효하지 않은 경로입니다." onClose={()=>{navigate('/')}}/>}></Route>
+        <Route path="/service" element={<Service/>}>
+          <Route path="notice" element={<Notice/>}></Route>
+          <Route path="online" element={<Online/>}></Route>
+          <Route path="qna" element={<Qna/>}></Route>
+          <Route path="gallery" element={<Gallery/>}></Route>
+        </Route>
       </Routes>
     </ThemeProvider>
   )
