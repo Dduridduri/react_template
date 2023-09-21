@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import styled from 'styled-components';
-import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getFirestore, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 //Link navLink는 액티브 되냐아니냐
@@ -34,13 +34,22 @@ const Button = styled.button`
     svg{margin-right:12px}
 `
 
-function Ckeditor({title}) {
+function Ckeditor({title, postData}) {
     const memberProfile = useSelector(state => state.user);
     const [isModal, setIsModal] = useState(false);
     const navigate = useNavigate();
-    const {board} = useParams();
+    const {board, view} = useParams();
     const [writeData, setWriteData] = useState("");
     const [message, setMessage] = useState("");
+
+
+    useEffect(()=>{
+        if(postData){
+            setWriteData(postData.content);
+        }
+    },[postData])
+    
+    
     const dataSubmit = async ()=>{
       if(title.length === 0){
         setIsModal(!isModal);
@@ -51,21 +60,34 @@ function Ckeditor({title}) {
         setMessage("내용을 입력해주세요");
         return;
       }
-    
+
+
 
     try{
-        await addDoc(collection(getFirestore(),board),{
-            //setDoc은 지정 user만들어감 addDoc은 랜덤user로 추가됨
-            title: title,
-            content: writeData,
-            view: 1,
-            uid: memberProfile.uid,
-            name: memberProfile.data.name,
-            email: memberProfile.data.email,
-            nickname: memberProfile.data.nickname,
-            timestamp: serverTimestamp()
-        })
-        alert("게시글이 성공적으로 등록되었습니다.")
+        if(board && view){
+            const postRef = doc(getFirestore(),board, view);
+            await updateDoc(postRef,{
+                title: title,
+                content: writeData
+            })
+
+            
+            alert("게시글이 성공적으로 등록되었습니다.")
+        }else{
+            await addDoc(collection(getFirestore(),board),{
+                //setDoc은 지정 user만들어감 addDoc은 랜덤user로 추가됨
+                title: title,
+                content: writeData,
+                view: 1,
+                uid: memberProfile.uid,
+                name: memberProfile.data.name,
+                email: memberProfile.data.email,
+                nickname: memberProfile.data.nickname,
+                timestamp: serverTimestamp()
+            })
+            alert("게시글이 성공적으로 등록되었습니다.")
+        }
+
         navigate(`/service/${board}`)
         //어느게시판이던 지금 게시판으로 들어감
     }catch(error){
@@ -76,12 +98,15 @@ function Ckeditor({title}) {
 
     console.log(memberProfile)
 
+
+
   return (
     <>
     {isModal&& <Modal error={message} onClose={()=>{setIsModal(false)}} />}    
     <CKEditor
                   
                      editor={ClassicEditor}
+                     data = {writeData}
                     config={{
                          placeholder: "내용을 입력하세요.",
                      }}

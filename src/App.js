@@ -23,6 +23,7 @@ import Gallery from "./pages/service/Gallery";
 import View from "./pages/View";
 import { useState } from "react";
 import Modal from "./components/Modal";
+import NotPage from "./pages/NotPage";
 
 
 function App() {
@@ -68,12 +69,13 @@ function Inner(){
   const dispatch = useDispatch();
   const uid = sessionStorage.getItem("users");
   console.log(uid)
-  if(uid){
-    dispatch(logIn(uid));
-  }
+
 
   useEffect(()=>{
 //로딩되고나서 작동하는것
+  if(uid){
+    dispatch(logIn(uid));
+  }
     const fetchUser = async () =>{
       if(!uid) return;
 
@@ -120,12 +122,15 @@ function Inner(){
         <Route path="/write/:board" element={<Write/>}></Route>
         <Route path="/view/:board/:view" element={<View/>}></Route>
         <Route path="/view/:board" element={isModal && <Modal error="유효하지 않은 경로입니다." onClose={()=>{navigate('/')}}/>}></Route>
+        <Route path="/edit/:board/:view" element={<Write/>}></Route>
         <Route path="/service" element={<Service/>}>
           <Route path="notice" element={<Notice/>}></Route>
           <Route path="online" element={<Online/>}></Route>
           <Route path="qna" element={<Qna/>}></Route>
           <Route path="gallery" element={<Gallery/>}></Route>
         </Route>
+        <Route path="/*" element={<NotPage/>}></Route>
+        {/* 404 = 페이지없음 403 = 폴더가 없음 500 = 서버에러 */}
       </Routes>
     </ThemeProvider>
   )
