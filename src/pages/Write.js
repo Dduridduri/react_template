@@ -85,7 +85,7 @@ const ContentLabel = styled.p`
 function Write() {
 
   const [txtTitle, setTxtTitle] = useState("");
-  const {board, view, edit} = useParams();
+  const {board, view} = useParams();
   const boards = ["notice", "online", "qna","gallery"];
   const [isModal, setIsModal] = useState(view ? false : true);
   const navigate = useNavigate();
@@ -123,7 +123,15 @@ function Write() {
 
 
   if(!memberProfile.loggedIn){
- 
+    
+    return(
+      <>
+      {
+        isModal &&
+        <Modal error='로그인 상태가 아닙니다.' onClose={()=>{setIsModal(false);navigate('/')}}/>
+      }
+      </>
+    )
   }
   if(!boards.includes(board)){
     return(
