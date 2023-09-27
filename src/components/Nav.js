@@ -320,12 +320,12 @@ function Nav() {
           <NavMember>
             <ul>
               <li>
-                <NavLink to={userState.data?.nickname ? "/logout" : "/login"}>
-                  <FontAwesomeIcon icon={faLock}></FontAwesomeIcon> {userState.data?.nickname ? "로그아웃" : "로그인"}
+                <NavLink to={userState.uid ? "/logout" : "/login"}>
+                  <FontAwesomeIcon icon={faLock}></FontAwesomeIcon> {userState.uid ? "로그아웃" : "로그인"}
                 </NavLink>
               </li>
             {
-              userState.data?.nickname ? 
+              userState.uid ? 
               <li>
               <NavLink to="/modify">
                 <FontAwesomeIcon icon={faUserPen}></FontAwesomeIcon> 정보수정
