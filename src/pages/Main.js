@@ -9,6 +9,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import Banner from "../components/home/Banner"
+import Company from '../components/home/Company'
 
 // const Test = ()=>{
 //     return(
@@ -39,6 +40,7 @@ function Main() {
   return (
     <>       
       <Banner/>
+      <Company />
     </>
   )
 }

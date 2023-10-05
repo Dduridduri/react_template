@@ -97,7 +97,7 @@ function Ckeditor({title, postData}) {
             // alert("게시글이 성공적으로 등록되었습니다.")
         }
 
-        // navigate(`/service/${board}`)
+        navigate(`/service/${board}`)
         //어느게시판이던 지금 게시판으로 들어감
     }catch(error){
         setIsModal(!isModal);
@@ -111,7 +111,7 @@ function Ckeditor({title, postData}) {
 
         return new Promise((resolve, reject)=>{
             upload.on('state_changed', 
-            (snapeshot)=>{
+            (snapshot)=>{
 
             },
             
